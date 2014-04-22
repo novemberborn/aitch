@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>aitch - README.md</title>
+
+  <link rel="stylesheet" href="assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content=""/>
+  <meta name="groc-document-path" content="README.md"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        <a href="https://github.com/novemberborn/aitch/blob/master/README.md">README.md</a>
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h1 id="aitch"><a href="#aitch" class="anchor"></a>aitch</h1><p>Toolkit for constructing hypertext service clients.</p>
+<h2 id="installation"><a href="#installation" class="anchor"></a>Installation</h2><pre><code>npm <span class="hljs-keyword">install</span> legendary
+npm <span class="hljs-keyword">install</span> aitch
+</code></pre><p>This module has a peer dependency on
+<a href="https://github.com/novemberborn/legendary">Legendary</a>.</p>
+<h2 id="usage"><a href="#usage" class="anchor"></a>Usage</h2><p>See <a href="http://novemberborn.github.io/aitch/lib/main.js.html">API Docs</a>.</p>
+<h2 id="examples"><a href="#examples" class="anchor"></a>Examples</h2><p>Make an HTTP request against the GitHub API:</p>
+<pre><code class="lang-js"><span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> aitch = <span class="hljs-built_in">require</span>(<span class="hljs-string">'aitch'</span>);
+
+<span class="hljs-keyword">var</span> client = <span class="hljs-keyword">new</span> aitch.Client({
+  transport: <span class="hljs-keyword">new</span> aitch.Transport({
+    hostname: <span class="hljs-string">'api.github.com'</span>
+  }),
+  headers: {
+    host: <span class="hljs-string">'api.github.com'</span>,
+    accept: <span class="hljs-string">'application/vnd.github.v3+json'</span>,
+    <span class="hljs-string">'user-agent'</span>: <span class="hljs-string">'novemberborn/aitch'</span>
+  }
+});
+
+<span class="hljs-keyword">var</span> response = client.get({
+  pathname: <span class="hljs-string">'/repos/novemberborn/aitch/releases'</span>
+});
+
+response.stream.pipe(process.stdout);
+</code></pre>
+</div>
+        </div>
+      
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="toc.js"></script>
+  <script src="assets/libs.js"></script>
+  <script src="assets/behavior.js"></script>
+</body>
+</html>

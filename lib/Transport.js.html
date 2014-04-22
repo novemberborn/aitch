@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Transport([options]) - Transport.js</title>
+
+  <link rel="stylesheet" href="../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../"/>
+  <meta name="groc-document-path" content="lib/Transport.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        <a href="https://github.com/novemberborn/aitch/blob/master/lib/Transport.js">lib/Transport.js</a>
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><div class="wrapper"><span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> https = <span class="hljs-built_in">require</span>(<span class="hljs-string">'https'</span>);
+<span class="hljs-keyword">var</span> util = <span class="hljs-built_in">require</span>(<span class="hljs-string">'util'</span>);
+
+<span class="hljs-keyword">var</span> UnencryptedTransport = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./UnencryptedTransport'</span>);
+
+<span class="hljs-keyword">var</span> hop = {}.hasOwnProperty;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h1 id="transport-options-"><a href="#transport-options-" class="anchor"></a>Transport([options])</h1></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Manages the connection to the service, issuing requests against it. Relies on
+Node&#39;s <code>https</code> module for the actual connections. Extends
+<a href="./UnencryptedTransport.js.html"><code>UnencryptedTransport</code></a>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Transport</span><span class="hljs-params">(options)</span> {</span></div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="transport-port"><a href="#transport-port" class="anchor"></a>Transport#port</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>The port the service is listening on. Defaults to <code>443</code>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">this</span>.port = <span class="hljs-keyword">this</span>.port || <span class="hljs-number">443</span>;
+  <span class="hljs-keyword">this</span>.tls = <span class="hljs-literal">null</span>;
+
+  UnencryptedTransport.call(<span class="hljs-keyword">this</span>, options);
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="additional-options"><a href="#additional-options" class="anchor"></a>Additional options</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="tls"><a href="#tls" class="anchor"></a><code>tls</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Only if <code>agent</code> is <code>false</code>, set this to an object with the following
+properties: <code>pfx</code>, <code>key</code>, <code>passphrase</code>, <code>cert</code>, <code>ca</code>, <code>ciphers</code>,
+<code>rejectUnauthorized</code> and <code>secureProtocol</code>. Consult the <a href="http://nodejs.org/api/https.html#https_https_request_options_callback">Node
+documentation</a>
+for details.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (options &amp;&amp; hop.call(options, <span class="hljs-string">'tls'</span>)) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.agent !== <span class="hljs-literal">false</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Unexpected `tls`, `agent` is not `false`.'</span>);
+    }
+    <span class="hljs-keyword">if</span> (!options.tls || <span class="hljs-keyword">typeof</span> options.tls !== <span class="hljs-string">'object'</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `tls` to be an object.'</span>);
+    }
+    <span class="hljs-keyword">this</span>.tls = options.tls;
+  }
+}
+
+module.exports = Transport;
+
+util.inherits(Transport, UnencryptedTransport);
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="transport-_makerequest-options-"><a href="#transport-_makerequest-options-" class="anchor"></a>Transport#_makeRequest(options)</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Calls out to Node&#39;s <code>https</code> module to make a <code>ClientRequest</code> instance.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Expects to be called with an <code>options</code> object containing <code>hostname</code>, <code>port</code>,
+<code>agent</code>, <code>method</code>, <code>path</code>, <code>headers</code> and <code>auth</code> properties.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Will <em>add</em> any <code>tls</code> properties (<code>pfx</code>, <code>key</code>, <code>passphrase</code>, <code>cert</code>, <code>ca</code>,
+<code>ciphers</code>, <code>rejectUnauthorized</code> and <code>secureProtocol</code>) to <code>options</code>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">Transport.prototype._makeRequest = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.tls) {
+    options.pfx = <span class="hljs-keyword">this</span>.tls.pfx;
+    options.key = <span class="hljs-keyword">this</span>.tls.key;
+    options.passphrase = <span class="hljs-keyword">this</span>.tls.passphrase;
+    options.cert = <span class="hljs-keyword">this</span>.tls.cert;
+    options.ca = <span class="hljs-keyword">this</span>.tls.ca;
+    options.ciphers = <span class="hljs-keyword">this</span>.tls.ciphers;
+    options.rejectUnauthorized = <span class="hljs-keyword">this</span>.tls.rejectUnauthorized;
+    options.secureProtocol = <span class="hljs-keyword">this</span>.tls.secureProtocol;
+  }
+  <span class="hljs-keyword">return</span> https.request(options);
+};
+</div></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../toc.js"></script>
+  <script src="../assets/libs.js"></script>
+  <script src="../assets/behavior.js"></script>
+</body>
+</html>

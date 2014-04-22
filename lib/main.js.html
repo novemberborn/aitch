@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>main - main.js</title>
+
+  <link rel="stylesheet" href="../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../"/>
+  <meta name="groc-document-path" content="lib/main.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        <a href="https://github.com/novemberborn/aitch/blob/master/lib/main.js">lib/main.js</a>
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><div class="wrapper"><span class="hljs-pi">'use strict'</span>;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h1 id="main"><a href="#main" class="anchor"></a>main</h1></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="baseclient"><a href="#baseclient" class="anchor"></a>BaseClient</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Base class for clients. <a href="./BaseClient.js.html">Read more</a>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">exports.BaseClient = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./BaseClient'</span>);
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="client"><a href="#client" class="anchor"></a>Client</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Generic HTTP client with helper methods to make requests.
+<a href="./Client.js.html">Read more</a>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">exports.Client = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./Client'</span>);
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request"><a href="#request" class="anchor"></a>Request</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Internal class describing a request. <a href="./Request.js.html">Read more</a>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">exports.Request = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./Request'</span>);
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="response"><a href="#response" class="anchor"></a>Response</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Promise subclass for a service response. <a href="./Response.js.html">Read more</a>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">exports.Response = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./Response'</span>);
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="transport"><a href="#transport" class="anchor"></a>Transport</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Issues the request against a service, over HTTPS, returning a <code>Response</code>
+promise. <a href="./Transport.js.html">Read more</a>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">exports.Transport = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./Transport'</span>);
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="unencryptedtransport"><a href="#unencryptedtransport" class="anchor"></a>UnencryptedTransport</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Issues the request against a service, over HTTP, returning a <code>Response</code>
+promise. <a href="./UnencryptedTransport.js.html">Read more</a>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">exports.UnencryptedTransport = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./UnencryptedTransport'</span>);
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="validationhelpers"><a href="#validationhelpers" class="anchor"></a>validationHelpers</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Helper methods for dealing with header and query-parameter values.
+<a href="./validation-helpers.js.html">Read more</a>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">exports.validationHelpers = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./validation-helpers'</span>);
+</div></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../toc.js"></script>
+  <script src="../assets/libs.js"></script>
+  <script src="../assets/behavior.js"></script>
+</body>
+</html>

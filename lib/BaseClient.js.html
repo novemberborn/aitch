@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BaseClient([options]) - BaseClient.js</title>
+
+  <link rel="stylesheet" href="../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../"/>
+  <meta name="groc-document-path" content="lib/BaseClient.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        <a href="https://github.com/novemberborn/aitch/blob/master/lib/BaseClient.js">lib/BaseClient.js</a>
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><div class="wrapper"><span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> Request = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./Request'</span>);
+<span class="hljs-keyword">var</span> Response = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./Response'</span>);
+<span class="hljs-keyword">var</span> validationHelpers = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./validation-helpers'</span>);
+
+<span class="hljs-keyword">var</span> hop = {}.hasOwnProperty;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h1 id="baseclient-options-"><a href="#baseclient-options-" class="anchor"></a>BaseClient([options])</h1></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Base class for service clients. Unlike <a href="./Client.js.html"><code>Client</code></a> does not
+provide any public methods so subclasses can declare them as they like,
+without having to override say a <code>get()</code> method.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Throws <code>TypeError</code> instances if illegal options are provided.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">BaseClient</span><span class="hljs-params">(options)</span> {</span></div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="options"><a href="#options" class="anchor"></a>Options</h2></div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> pathname, query, headers, overrideAuth, auth, transport;
+  <span class="hljs-keyword">if</span> (options) {</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Configure a client when it&#39;s instantiated. If provided it must be an
+object. Only own-properties are considered.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options !== <span class="hljs-string">'object'</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `options` to be an object.'</span>);
+    }
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="pathname"><a href="#pathname" class="anchor"></a><code>pathname</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Sets the <code>pathname</code> property. If given it must be a non-empty string.
+Cannot contain a <code>?</code> search component, use the <code>query</code> option instead.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'pathname'</span>)) {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options.pathname !== <span class="hljs-string">'string'</span> || options.pathname === <span class="hljs-string">''</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `pathname` to be a non-empty string.'</span>);
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (~options.pathname.indexOf(<span class="hljs-string">'?'</span>)) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'`pathname` cannot contain `?`.'</span>);
+      }
+      pathname = options.pathname;
+    }
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="query"><a href="#query" class="anchor"></a><code>query</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Updates the <code>query</code> parameter list. Optional, but if given it must be an
+object. Only own-properties are considered as parameters.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Parameter names must not be empty strings. Values can be strings, finite
+numbers, and booleans. They&#39;ll be cast to strings if necessary.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'query'</span>)) {
+      <span class="hljs-keyword">if</span> (!options.query || <span class="hljs-keyword">typeof</span> options.query !== <span class="hljs-string">'object'</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `query` to be an object.'</span>);
+      }
+      query = options.query;
+    }
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="headers"><a href="#headers" class="anchor"></a><code>headers</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Updates the <code>headers</code> list. Optional, but if given it must be an object.
+Only own-properties are considered as headers.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Header names are downcased and may not be the same as other downcased
+names. They must not be empty strings either.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Values can be strings, finite numbers, and booleans. They&#39;ll be cast to
+strings if necessary. Values may be arrays, in which case each item will
+still need to be a string, finite number, or boolean. Again they&#39;ll be
+cast to strings if necessary. Array values are not allowed to include
+other arrays.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'headers'</span>)) {
+      <span class="hljs-keyword">if</span> (!options.headers || <span class="hljs-keyword">typeof</span> options.headers !== <span class="hljs-string">'object'</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `headers` to be an object.'</span>);
+      }
+      headers = options.headers;
+    }
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="auth"><a href="#auth" class="anchor"></a><code>auth</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Sets the <code>auth</code> property. If provided will override any existing default.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">    overrideAuth = hop.call(options, <span class="hljs-string">'auth'</span>);
+    auth = options.auth;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="transport"><a href="#transport" class="anchor"></a><code>transport</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Sets the <code>transport</code> property. Optional only if the client class provides
+a default transport. Must be an object, but other methods are not
+checked.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'transport'</span>)) {
+      <span class="hljs-keyword">if</span> (!options.transport || <span class="hljs-keyword">typeof</span> options.transport !== <span class="hljs-string">'object'</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `transport` to be an object.'</span>);
+      }
+      transport = options.transport;
+    }
+  }
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="baseclient-pathname"><a href="#baseclient-pathname" class="anchor"></a>BaseClient#pathname</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>The remote path. Subclasses can set a default value on the prototype or
+instance before the base constructor is called. Such values <em>must not</em>
+include a query component. Defaults to <code>/</code>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">this</span>.pathname = pathname || <span class="hljs-keyword">this</span>.pathname || <span class="hljs-string">'/'</span>;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="baseclient-query"><a href="#baseclient-query" class="anchor"></a>BaseClient#query</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Flat list of parameters and values, e.g. <code>[&#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;, &#39;thud&#39;]</code>
+would correspond to <code>foo=bar&amp;baz=thud</code>.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Subclasses can set an initial value on the prototype or instances before
+the base constructor is called. The <code>query</code> option is then <em>added</em> to this
+initial value. This can lead to duplicate parameters. Exactly how these
+are sent to the service depends on the behavior of the <code>Request</code> class.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>When setting the initial value make sure the parameter names are non-empty
+strings and the values are strings.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (query) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.query) {
+      <span class="hljs-keyword">this</span>.query = <span class="hljs-keyword">this</span>.query.concat(<span class="hljs-keyword">this</span>._normalizeQuery(query));
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">this</span>.query = <span class="hljs-keyword">this</span>._normalizeQuery(query);
+    }
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.query) {</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>To be safe, the initial <code>query</code> list is never used directly.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">    <span class="hljs-keyword">this</span>.query = <span class="hljs-keyword">this</span>.query.slice();
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">this</span>.query = [];
+  }
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="baseclient-headers"><a href="#baseclient-headers" class="anchor"></a>BaseClient#headers</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Flat list of headers and values, e.g. <code>[&#39;content-type&#39;, &#39;text/plain&#39;]</code>
+would correspond to a <code>content-type: text/plain</code> header.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Subclasses can set an initial value on the prototype or instance before the
+base constructor is called. The <code>headers</code> option is then <em>added</em> to this
+initial value. This can lead to duplicate headers. Exactly how these
+are sent to the service depends on the behavior of the <code>Request</code> class.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>When setting the initial value make sure the header names are non-empty,
+downcased strings and the values are strings, or flat arrays containing
+just strings.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (headers) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.headers) {
+      <span class="hljs-keyword">this</span>.headers = <span class="hljs-keyword">this</span>.headers.concat(<span class="hljs-keyword">this</span>._normalizeHeaders(headers));
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">this</span>.headers = <span class="hljs-keyword">this</span>._normalizeHeaders(headers);
+    }
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.headers) {</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>To be safe, the initial <code>headers</code> list is never used directly.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">    <span class="hljs-keyword">this</span>.headers = <span class="hljs-keyword">this</span>.headers.slice();
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">this</span>.headers = [];
+  }
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="baseclient-auth"><a href="#baseclient-auth" class="anchor"></a>BaseClient#auth</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Credential for authenticating with the service. Its format depends on the
+behavior of the <code>Request</code> class, which is responsible for including it in
+the request issued against the service.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Subclasses can set a default value on the prototype or instance before the
+base constructor is called. The <code>auth</code> option will override this default
+value.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (overrideAuth) {
+    <span class="hljs-keyword">this</span>.auth = auth;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">this</span>.auth = <span class="hljs-keyword">this</span>.auth;
+  }
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="baseclient-transport"><a href="#baseclient-transport" class="anchor"></a>BaseClient#transport</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>An instance of a transport class, e.g.
+<a href="./SslTransport.js.html"><code>SslTransport</code></a>, responsible for issuing the
+request against the service.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (transport) {
+    <span class="hljs-keyword">this</span>.transport = transport;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">this</span>.transport = <span class="hljs-keyword">this</span>.transport;
+  }
+  <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.transport) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `transport` option.'</span>);
+  }
+}
+
+module.exports = BaseClient;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="baseclient-request"><a href="#baseclient-request" class="anchor"></a>BaseClient#Request</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Class used to describe requests that are to be issued against the service.
+Defaults to <a href="./Request.js.html"><code>Request</code></a>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">BaseClient.prototype.Request = Request;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="baseclient-response"><a href="#baseclient-response" class="anchor"></a>BaseClient#Response</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Promise subclass for a service response. Defaults to
+<a href="./Response.js.html"><code>Response</code></a>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">BaseClient.prototype.Response = Response;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="baseclient-_normalizequery-query-"><a href="#baseclient-_normalizequery-query-" class="anchor"></a>BaseClient#_normalizeQuery(query)</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Converts <code>query</code>&#39;s own-properties and values into a flat list of alternating
+property names and values. Validates that the the names are not empty;
+validates the values and casts them to strings if necessary.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Throws <code>TypeError</code> instances for validation errors.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">BaseClient.prototype._normalizeQuery = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(query)</span> {</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">Object</span>.keys(query).reduce(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result, p)</span> {</span>
+    <span class="hljs-keyword">if</span> (!p) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Unexpected empty param name.'</span>);
+    }
+
+    result.push(p, validationHelpers.castQueryValue(query[p], p));
+    <span class="hljs-keyword">return</span> result;
+  }, []);
+};
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="baseclient-_normalizeheaders-headers-"><a href="#baseclient-_normalizeheaders-headers-" class="anchor"></a>BaseClient#_normalizeHeaders(headers)</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Converts <code>headers</code>&#39; own-properties and values into a flat list of alternating
+property names and values. First downcases the property names and checks
+against other names in the same <code>headers</code> object in case there are
+case-insensitive duplicates. Validates that the the names are not empty;
+validates the values and casts them to strings if necessary.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Throws <code>TypeError</code> instances for validation errors.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">BaseClient.prototype._normalizeHeaders = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(headers)</span> {</span>
+  <span class="hljs-keyword">var</span> encountered = {};
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">Object</span>.keys(headers).reduce(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(result, h)</span> {</span>
+    <span class="hljs-keyword">if</span> (!h) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Unexpected empty header name.'</span>);
+    }
+
+    <span class="hljs-keyword">var</span> lowercased = h.toLowerCase();
+    <span class="hljs-keyword">if</span> (hop.call(encountered, lowercased)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Unexpected duplicate `'</span> + h + <span class="hljs-string">'` header.'</span>);
+    }
+    encountered[lowercased] = <span class="hljs-literal">true</span>;
+
+    result.push(lowercased, validationHelpers.castHeaderValue(headers[h], h));
+    <span class="hljs-keyword">return</span> result;
+  }, []);
+};
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="baseclient-_issuerequest-method-options-"><a href="#baseclient-_issuerequest-method-options-" class="anchor"></a>BaseClient#_issueRequest(method, [options])</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Constructs and issues a request using the <code>.transport</code>.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>For documentation on <code>options</code> see the <a href="./Request.js.html"><code>Request</code></a> class.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">BaseClient.prototype._issueRequest = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, options)</span> {</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.transport.issueRequest(
+    <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>.Request(<span class="hljs-keyword">this</span>, method, options || {}), <span class="hljs-keyword">this</span>.Response);
+};
+</div></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../toc.js"></script>
+  <script src="../assets/libs.js"></script>
+  <script src="../assets/behavior.js"></script>
+</body>
+</html>

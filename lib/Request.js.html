@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Request(client, method, options) - Request.js</title>
+
+  <link rel="stylesheet" href="../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../"/>
+  <meta name="groc-document-path" content="lib/Request.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        <a href="https://github.com/novemberborn/aitch/blob/master/lib/Request.js">lib/Request.js</a>
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><div class="wrapper"><span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> validationHelpers = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./validation-helpers'</span>);
+
+<span class="hljs-keyword">var</span> hop = {}.hasOwnProperty;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h1 id="request-client-method-options-"><a href="#request-client-method-options-" class="anchor"></a>Request(client, method, options)</h1></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Describes a request.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p><code>client</code> should be a <a href="./BaseClient.js.html"><code>BaseClient</code></a> instance.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p><code>method</code> can be any HTTP method, as understood by the transport responsible
+for actually issuing the request.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Throws <code>TypeError</code> instances if illegal options are provided.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="options"><a href="#options" class="anchor"></a>Options</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="pathname"><a href="#pathname" class="anchor"></a><code>pathname</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Overrides <code>client.pathname</code>. If given must be a non-empty string. Cannot
+contain a <code>?</code> search component, use the <code>query</code> option instead.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="query"><a href="#query" class="anchor"></a><code>query</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Mixes with <code>client.query</code>. If given, parameters from this option will replace
+those specified in the client.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Parameter names must not be empty strings. Values can be strings, finite
+numbers, and booleans. They&#39;ll be cast to strings if necessary.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="headers"><a href="#headers" class="anchor"></a><code>headers</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Mixes with <code>client.headers</code>. If given, headers from this option will replace
+those specified in the client.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Header names are downcased and may not be the same as other downcased
+names. They must not be empty strings either.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Values can be strings, finite numbers, and booleans. They&#39;ll be cast to
+strings if necessary. Values may be arrays, in which case each item will
+still need to be a string, finite number, or boolean. Again they&#39;ll be
+cast to strings if necessary. Array values are not allowed to include
+other arrays.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="auth"><a href="#auth" class="anchor"></a><code>auth</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Overrides <code>client.auth</code>.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="body-options"><a href="#body-options" class="anchor"></a>Body options</h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Only one of <code>stream</code>, <code>chunk</code>, <code>json</code> and <code>form</code> can be provided. Note that
+whether a body should be provided depends on the HTTP method used.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h4 id="stream"><a href="#stream" class="anchor"></a><code>stream</code></h4></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Provides a stream that can be piped to the service. Must be an object with a
+<code>pipe</code> method.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h4 id="chunk"><a href="#chunk" class="anchor"></a><code>chunk</code></h4></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Provides a single <code>Buffer</code> instance that can be written to the service.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h4 id="json"><a href="#json" class="anchor"></a><code>json</code></h4></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Provides a value that can be converted to JSON and sent to the service
+using <code>utf8</code> encoding. If no <code>content-type</code> header is set, will set one
+according to <code>Request#DEFAULT_JSON_CONTENT_TYPE</code>.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h4 id="form"><a href="#form" class="anchor"></a><code>form</code></h4></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Provides an object that can be URL-encoded and sent to the service using
+<code>utf8</code> encoding. If no <code>content-type</code> header is set, will set one according
+to <code>Request#DEFAULT_FORM_CONTENT_TYPE</code>.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Parameter names must not be empty strings. Values can be strings, finite
+numbers, and booleans. They&#39;ll be cast to strings if necessary.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Request</span><span class="hljs-params">(client, method, options)</span> {</span></div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request-method"><a href="#request-method" class="anchor"></a>Request#method</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>HTTP method.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">this</span>.method = method;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request-path"><a href="#request-path" class="anchor"></a>Request#path</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Path value, consisting of a <code>pathname</code> and an optional search component.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">this</span>.path = <span class="hljs-keyword">this</span>.buildPath(client.pathname, client.query, options);
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request-headers"><a href="#request-headers" class="anchor"></a>Request#headers</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Headers object. All keys will are lowercased.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">this</span>.headers = <span class="hljs-keyword">this</span>.buildHeaders(client.headers, options);
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request-body"><a href="#request-body" class="anchor"></a>Request#body</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Body object. <code>null</code> if no body needs to be sent to the service. Has either
+a <code>stream</code> property, containing a stream that can be piped, or a <code>chunk</code>
+property, containing a <code>Buffer</code> instance.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">this</span>.body = <span class="hljs-keyword">this</span>.buildBody(options);
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request-auth"><a href="#request-auth" class="anchor"></a>Request#auth</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Authorization credential.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">this</span>.auth = <span class="hljs-keyword">this</span>.buildAuth(client.auth, options);
+}
+
+module.exports = Request;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request-default_json_content_type"><a href="#request-default_json_content_type" class="anchor"></a>Request#DEFAULT_JSON_CONTENT_TYPE</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Default <code>content-type</code> header for JSON bodies.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">Request.prototype.DEFAULT_JSON_CONTENT_TYPE =
+  <span class="hljs-string">'application/json; charset=utf-8'</span>;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request-default_form_content_type"><a href="#request-default_form_content_type" class="anchor"></a>Request#DEFAULT_FORM_CONTENT_TYPE</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Default <code>content-type</code> header for form bodies.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">Request.prototype.DEFAULT_FORM_CONTENT_TYPE =
+  <span class="hljs-string">'application/x-www-form-urlencoded; charset=utf-8'</span>;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request-buildpath-defaultpathname-basequery-options-"><a href="#request-buildpath-defaultpathname-basequery-options-" class="anchor"></a>Request#buildPath(defaultPathname, baseQuery, options)</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Builds the <code>path</code>. If provided, <code>options.pathname</code> is used, otherwise
+<code>defaultPathname</code>. Combines <code>options.query</code> with <code>baseQuery</code> for the search
+component.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Throws <code>TypeError</code> instances if illegal options are provided.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">Request.prototype.buildPath = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(defaultPathname, baseQuery, options)</span> {</span>
+  <span class="hljs-keyword">var</span> path;
+  <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'pathname'</span>)) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options.pathname !== <span class="hljs-string">'string'</span> || options.pathname === <span class="hljs-string">''</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `pathname` to be a non-empty string.'</span>);
+    }
+    path = options.pathname;
+  } <span class="hljs-keyword">else</span> {
+    path = defaultPathname;
+  }
+  <span class="hljs-keyword">if</span> (~path.indexOf(<span class="hljs-string">'?'</span>)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'`pathname` cannot contain `?`.'</span>);
+  }
+
+  <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'query'</span>) &amp;&amp;
+      (!options.query || <span class="hljs-keyword">typeof</span> options.query !== <span class="hljs-string">'object'</span>)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `query` to be an object.'</span>);
+  }
+  <span class="hljs-keyword">var</span> pairs = <span class="hljs-keyword">this</span>.buildQueryPairs(baseQuery, options.query);
+  <span class="hljs-keyword">if</span> (pairs.length) {
+    path += <span class="hljs-string">'?'</span> + pairs.join(<span class="hljs-string">'&amp;'</span>);
+  }
+
+  <span class="hljs-keyword">return</span> path;
+};
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request-buildquerypairs-base-query-"><a href="#request-buildquerypairs-base-query-" class="anchor"></a>Request#buildQueryPairs(base, [query])</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Builds a flat list of alternating parameters and values. <code>base</code> is expected
+to be the initial list, <code>query</code> an optional object that augments or overrides
+the base parameters.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Throws <code>TypeError</code> instances if illegal options are provided.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">Request.prototype.buildQueryPairs = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(base, query)</span> {</span>
+  <span class="hljs-keyword">var</span> pairs = [];
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = base.length; i &lt; l; i += <span class="hljs-number">2</span>) {
+    <span class="hljs-keyword">var</span> p = base[i], v = base[i + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">if</span> (!query || !hop.call(query, p)) {
+      pairs.push(<span class="hljs-built_in">encodeURIComponent</span>(p) + <span class="hljs-string">'='</span> + <span class="hljs-built_in">encodeURIComponent</span>(v));
+    }
+  }
+
+  <span class="hljs-keyword">if</span> (query) {
+    <span class="hljs-built_in">Object</span>.keys(query).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(p)</span> {</span>
+      <span class="hljs-keyword">if</span> (!p) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Unexpected empty param name.'</span>);
+      }
+
+      <span class="hljs-keyword">var</span> v = validationHelpers.castQueryValue(query[p], p);
+      pairs.push(<span class="hljs-built_in">encodeURIComponent</span>(p) + <span class="hljs-string">'='</span> + <span class="hljs-built_in">encodeURIComponent</span>(v));
+    });
+  }
+
+  <span class="hljs-keyword">return</span> pairs;
+};
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request-buildheaders-base-options-"><a href="#request-buildheaders-base-options-" class="anchor"></a>Request#buildHeaders(base, options)</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Builds an object of all headers. <code>base</code> is expected to be the initial list,
+<code>options</code> can optionally contain a <code>headers</code> object that augments or
+overrides the base headers.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Throws <code>TypeError</code> instances if illegal options are provided.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">Request.prototype.buildHeaders = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(base, options)</span> {</span>
+  <span class="hljs-keyword">var</span> headers = {};
+
+  <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'headers'</span>)) {
+    <span class="hljs-keyword">if</span> (!options.headers || <span class="hljs-keyword">typeof</span> options.headers !== <span class="hljs-string">'object'</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `headers` to be an object.'</span>);
+    }
+
+    <span class="hljs-keyword">var</span> extra = options.headers;
+    <span class="hljs-built_in">Object</span>.keys(extra).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(h)</span> {</span>
+      <span class="hljs-keyword">if</span> (!h) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Unexpected empty header name.'</span>);
+      }
+
+      <span class="hljs-keyword">var</span> lowercased = h.toLowerCase();
+      <span class="hljs-keyword">if</span> (hop.call(headers, lowercased)) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Unexpected duplicate `'</span> + h + <span class="hljs-string">'` header.'</span>);
+      }
+      headers[lowercased] = validationHelpers.castHeaderValue(extra[h], h);
+    });
+  }
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, l = base.length; i &lt; l; i += <span class="hljs-number">2</span>) {
+    <span class="hljs-keyword">if</span> (!hop.call(headers, base[i])) {
+      headers[base[i]] = base[i + <span class="hljs-number">1</span>];
+    }
+  }
+
+  <span class="hljs-keyword">return</span> headers;
+};
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request-buildbody-options-"><a href="#request-buildbody-options-" class="anchor"></a>Request#buildBody(options)</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Builds an object describing the body. See the body options above.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Throws <code>TypeError</code> instances if illegal options are provided.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">Request.prototype.buildBody = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span>
+  <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'stream'</span>)) {
+    <span class="hljs-keyword">if</span> (!options.stream || <span class="hljs-keyword">typeof</span> options.stream.pipe !== <span class="hljs-string">'function'</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `stream` to be pipe()able.'</span>);
+    }
+    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'chunk'</span>)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(
+          <span class="hljs-string">'Unexpected `chunk` option when `stream` is present.'</span>);
+    }
+    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'json'</span>)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(
+          <span class="hljs-string">'Unexpected `json` option when `stream` is present.'</span>);
+    }
+    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'form'</span>)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(
+          <span class="hljs-string">'Unexpected `form` option when `stream` is present.'</span>);
+    }
+
+    <span class="hljs-keyword">return</span> { stream: options.stream };
+  }
+
+  <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'chunk'</span>)) {
+    <span class="hljs-keyword">if</span> (!Buffer.isBuffer(options.chunk)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `chunk` to be a buffer.'</span>);
+    }
+    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'json'</span>)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(
+          <span class="hljs-string">'Unexpected `json` option when `chunk` is present.'</span>);
+    }
+    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'form'</span>)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(
+          <span class="hljs-string">'Unexpected `form` option when `chunk` is present.'</span>);
+    }
+
+    <span class="hljs-keyword">return</span> { chunk: options.chunk };
+  }
+
+  <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'json'</span>)) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options.json === <span class="hljs-string">'undefined'</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Unexpected undefined value for `json`.'</span>);
+    }
+    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'form'</span>)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Unexpected `form` option when `json` is present.'</span>);
+    }
+
+    <span class="hljs-keyword">if</span> (!hop.call(<span class="hljs-keyword">this</span>.headers, <span class="hljs-string">'content-type'</span>)) {
+      <span class="hljs-keyword">this</span>.headers[<span class="hljs-string">'content-type'</span>] = <span class="hljs-keyword">this</span>.DEFAULT_JSON_CONTENT_TYPE;
+    }
+
+    <span class="hljs-keyword">return</span> { chunk: <span class="hljs-keyword">new</span> Buffer(<span class="hljs-built_in">JSON</span>.stringify(options.json), <span class="hljs-string">'utf8'</span>) };
+  }
+
+  <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'form'</span>)) {
+    <span class="hljs-keyword">if</span> (!options.form || <span class="hljs-keyword">typeof</span> options.form !== <span class="hljs-string">'object'</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `form` to be an object.'</span>);
+    }
+
+    <span class="hljs-keyword">if</span> (!hop.call(<span class="hljs-keyword">this</span>.headers, <span class="hljs-string">'content-type'</span>)) {
+      <span class="hljs-keyword">this</span>.headers[<span class="hljs-string">'content-type'</span>] = <span class="hljs-keyword">this</span>.DEFAULT_FORM_CONTENT_TYPE;
+    }
+
+    <span class="hljs-keyword">var</span> pairs = <span class="hljs-keyword">this</span>.buildQueryPairs([], options.form);
+    <span class="hljs-keyword">return</span> { chunk: <span class="hljs-keyword">new</span> Buffer(pairs.join(<span class="hljs-string">'&amp;'</span>), <span class="hljs-string">'utf8'</span>) };
+  }
+
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+};
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="request-buildauth-auth-options-"><a href="#request-buildauth-auth-options-" class="anchor"></a>Request#buildAuth(auth, options)</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Builds the authorization credential. Returns <code>options.auth</code> if provided, else
+just <code>auth</code>.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">Request.prototype.buildAuth = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(auth, options)</span> {</span>
+  <span class="hljs-keyword">return</span> hop.call(options, <span class="hljs-string">'auth'</span>) ? options.auth : auth;
+};
+</div></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../toc.js"></script>
+  <script src="../assets/libs.js"></script>
+  <script src="../assets/behavior.js"></script>
+</body>
+</html>

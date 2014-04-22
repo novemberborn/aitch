@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UnencryptedTransport([options]) - UnencryptedTransport.js</title>
+
+  <link rel="stylesheet" href="../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../"/>
+  <meta name="groc-document-path" content="lib/UnencryptedTransport.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        <a href="https://github.com/novemberborn/aitch/blob/master/lib/UnencryptedTransport.js">lib/UnencryptedTransport.js</a>
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><div class="wrapper"><span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">'http'</span>);
+<span class="hljs-keyword">var</span> Promise = <span class="hljs-built_in">require</span>(<span class="hljs-string">'legendary'</span>).Promise;
+
+<span class="hljs-keyword">var</span> hop = {}.hasOwnProperty;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h1 id="unencryptedtransport-options-"><a href="#unencryptedtransport-options-" class="anchor"></a>UnencryptedTransport([options])</h1></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Manages the connection to the service, issuing requests against it. Relies on
+Node&#39;s <code>http</code> module for the actual connections.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">UnencryptedTransport</span><span class="hljs-params">(options)</span> {</span></div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="options"><a href="#options" class="anchor"></a>Options</h2></div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> hostname = <span class="hljs-keyword">this</span>.hostname || <span class="hljs-string">'localhost'</span>;
+  <span class="hljs-keyword">var</span> port = <span class="hljs-keyword">this</span>.port || <span class="hljs-number">80</span>;
+  <span class="hljs-keyword">var</span> agent = <span class="hljs-keyword">this</span>.agent;
+
+  <span class="hljs-keyword">if</span> (options) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options !== <span class="hljs-string">'object'</span>) {</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Throws a <code>TypeError</code> instance if options is provided, but is not an
+object.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">'Expected `options` to be an object.'</span>);
+    }
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="hostname"><a href="#hostname" class="anchor"></a><code>hostname</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Sets the <code>hostname</code> property.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'hostname'</span>)) {
+      hostname = options.hostname;
+    }
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="port"><a href="#port" class="anchor"></a><code>port</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Sets the <code>port</code> property.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'port'</span>)) {
+      port = options.port;
+    }
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h3 id="agent"><a href="#agent" class="anchor"></a><code>agent</code></h3></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Sets the <code>agent</code> property. Passed to Node&#39;s <code>http</code> module.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (hop.call(options, <span class="hljs-string">'agent'</span>)) {
+      agent = options.agent;
+    }
+  }
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="unencryptedtransport-hostname"><a href="#unencryptedtransport-hostname" class="anchor"></a>UnencryptedTransport#hostname</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>The domain or IP address of the service endpoint. Defaults to <code>localhost</code>.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Subclasses can set a default value on the prototype or instance before the
+base constructor is called.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">this</span>.hostname = hostname;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="unencryptedtransport-port"><a href="#unencryptedtransport-port" class="anchor"></a>UnencryptedTransport#port</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>The port the service is listening on. Defaults to <code>80</code>.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Subclasses can set a default value on the prototype or instance before the
+base constructor is called.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">this</span>.port = port;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="unencryptedtransport-agent"><a href="#unencryptedtransport-agent" class="anchor"></a>UnencryptedTransport#agent</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Controls agent behavior.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Subclasses can set a default value on the prototype or instance before the
+base constructor is called.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  <span class="hljs-keyword">this</span>.agent = agent;
+}
+
+module.exports = UnencryptedTransport;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="unencryptedtransport-_makerequest-options-"><a href="#unencryptedtransport-_makerequest-options-" class="anchor"></a>UnencryptedTransport#_makeRequest(options)</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Calls out to Node&#39;s <code>http</code> module to make a <code>ClientRequest</code> instance. Can
+be overriden, for instance <a href="./SslTransport.js.html"><code>SslTransport</code></a> changes
+this method to use the <code>https</code> module.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Expects to be called with an <code>options</code> object containing <code>hostname</code>, <code>port</code>,
+<code>agent</code>, <code>method</code>, <code>path</code>, <code>headers</code> and <code>auth</code> properties.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">UnencryptedTransport.prototype._makeRequest = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span>
+  <span class="hljs-keyword">return</span> http.request(options);
+};
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="unencryptedtransport-issuerequest-descriptor-response-"><a href="#unencryptedtransport-issuerequest-descriptor-response-" class="anchor"></a>UnencryptedTransport#issueRequest(descriptor, [Response])</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Issues a request against the connected service. Expects the <code>descriptior</code>
+object to have <code>method</code>, <code>path</code>, <code>headers</code> and <code>auth</code> properties.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Expects <code>Response</code> to be a promise constructor, defaults to
+<a href="https://github.com/novemberborn/legendary">Legendary</a>&#39;s
+<a href="http://novemberborn.github.io/legendary/lib/promise.js.html"><code>Promise</code></a>.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Returns a promise for the service response. If the request emits an <code>error</code>
+event, the promise is rejected with that error. If the promise is cancelled
+the request is aborted.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">UnencryptedTransport.prototype.issueRequest = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(descriptor, Response)</span> {</span>
+  <span class="hljs-keyword">if</span> (!Response) {
+    Response = Promise;
+  }
+
+  <span class="hljs-keyword">var</span> request = <span class="hljs-keyword">this</span>._makeRequest({
+    hostname: <span class="hljs-keyword">this</span>.hostname,
+    port: <span class="hljs-keyword">this</span>.port,
+    agent: <span class="hljs-keyword">this</span>.agent,
+    method: descriptor.method,
+    path: descriptor.path,
+    headers: descriptor.headers,
+    auth: descriptor.auth
+  });
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Response(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(resolve, reject)</span> {</span>
+    request.on(<span class="hljs-string">'response'</span>, resolve);
+    request.on(<span class="hljs-string">'error'</span>, reject);
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>If the <code>descriptor</code> contains a <code>body</code> object with a <code>stream</code> property,
+that stream is piped to the request. Or if it contains a <code>chunk</code>
+property, that buffer is written to the request. Else the request is
+closed immediately.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (descriptor.body) {
+      <span class="hljs-keyword">if</span> (descriptor.body.stream) {
+        descriptor.body.stream.pipe(request);
+      } <span class="hljs-keyword">else</span> {
+        request.end(descriptor.body.chunk);
+      }
+    } <span class="hljs-keyword">else</span> {
+      request.end();
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      request.removeListener(<span class="hljs-string">'response'</span>, resolve);
+      request.removeListener(<span class="hljs-string">'error'</span>, reject);
+      request.abort();
+    };
+  });
+};
+</div></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../toc.js"></script>
+  <script src="../assets/libs.js"></script>
+  <script src="../assets/behavior.js"></script>
+</body>
+</html>

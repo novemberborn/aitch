@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Response(executor) - Response.js</title>
+
+  <link rel="stylesheet" href="../assets/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+  <meta name="groc-relative-root" content="../"/>
+  <meta name="groc-document-path" content="lib/Response.js"/>
+  
+</head>
+<body>
+  <div id="file-area">
+    <div id="meta">
+      <code class="file-path">
+      
+        <a href="https://github.com/novemberborn/aitch/blob/master/lib/Response.js">lib/Response.js</a>
+      
+      </code>
+    </div>
+    <div id="document">
+    
+      <div class="segment">
+      
+      
+        <div class="code"><div class="wrapper"><span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> blessObject = <span class="hljs-built_in">require</span>(<span class="hljs-string">'legendary'</span>).blessObject;
+<span class="hljs-keyword">var</span> extendConstructor = <span class="hljs-built_in">require</span>(<span class="hljs-string">'legendary'</span>).extendConstructor;
+<span class="hljs-keyword">var</span> Promise = <span class="hljs-built_in">require</span>(<span class="hljs-string">'legendary'</span>).Promise;
+<span class="hljs-keyword">var</span> Thenstream = <span class="hljs-built_in">require</span>(<span class="hljs-string">'thenstream'</span>).Thenstream;
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h1 id="response-executor-"><a href="#response-executor-" class="anchor"></a>Response(executor)</h1></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>A subclass of <a href="https://github.com/novemberborn/legendary">Legendary</a>&#39;s
+<a href="http://novemberborn.github.io/legendary/lib/promise.js.html"><code>Promise</code></a> that
+represents a service response.</p>
+</div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>Assumes the fulfillment value will be an <code>IncomingMessage</code> from Node&#39;s <code>http</code>
+module.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Response</span><span class="hljs-params">(executor)</span> {</span>
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> executor !== <span class="hljs-string">'function'</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>();
+  }
+
+  <span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> Response)) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Response(executor);
+  }
+
+  <span class="hljs-keyword">if</span> (executor !== blessObject) {
+    blessObject(<span class="hljs-keyword">this</span>, executor, <span class="hljs-literal">true</span>);
+  }
+}
+
+module.exports = extendConstructor(Response);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getStatusCode</span><span class="hljs-params">(r)</span> {</span>
+  <span class="hljs-keyword">return</span> r.statusCode;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getHeaders</span><span class="hljs-params">(r)</span> {</span>
+  <span class="hljs-keyword">return</span> r.headers;
+}
+
+<span class="hljs-built_in">Object</span>.defineProperties(Response.prototype, {</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="response-statuscode"><a href="#response-statuscode" class="anchor"></a>Response#statusCode</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>A Promise instance for the status code of the response.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  statusCode: {
+    configurable: <span class="hljs-literal">true</span>,
+    get: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._statusCode) {
+        <span class="hljs-keyword">this</span>._statusCode = <span class="hljs-keyword">this</span>.then(getStatusCode).to(Promise);
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._statusCode;
+    }
+  },
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="response-headers"><a href="#response-headers" class="anchor"></a>Response#headers</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>A Promise instance for the response headers.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  headers: {
+    configurable: <span class="hljs-literal">true</span>,
+    get: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._headers) {
+        <span class="hljs-keyword">this</span>._headers = <span class="hljs-keyword">this</span>.then(getHeaders).to(Promise);
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._headers;
+    }
+  },
+</div></div>
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><h2 id="response-stream"><a href="#response-stream" class="anchor"></a>Response#stream</h2></div>
+        </div>
+      
+      
+      </div>
+    
+      <div class="segment">
+      
+        <div class="comments ">
+          <div class="wrapper"><p>A readable stream for the response body.</p>
+</div>
+        </div>
+      
+      
+        <div class="code"><div class="wrapper">  stream: {
+    configurable: <span class="hljs-literal">true</span>,
+    get: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._stream) {
+        <span class="hljs-keyword">this</span>._stream = <span class="hljs-keyword">new</span> Thenstream(<span class="hljs-keyword">this</span>);
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._stream;
+    }
+  }
+});
+</div></div>
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <script src="../toc.js"></script>
+  <script src="../assets/libs.js"></script>
+  <script src="../assets/behavior.js"></script>
+</body>
+</html>
