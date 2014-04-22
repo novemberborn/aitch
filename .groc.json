@@ -1,0 +1,9 @@
+{
+  "glob": [
+    "README.md",
+    "lib/*.js"
+  ],
+  "github": false,
+  "out": "doc/",
+  "index": "README.md"
+}
