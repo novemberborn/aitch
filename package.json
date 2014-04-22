@@ -1,0 +1,59 @@
+{
+  "name": "aitch",
+  "version": "0.0.0",
+  "description": "Toolkit for constructing hypertext service clients.",
+  "main": "lib/main.js",
+  "scripts": {
+    "test": "mocha && npm run lint",
+    "lint": "jshint --reporter node_modules/jshint-stylish/stylish.js .",
+    "doc": "grock",
+    "doc-publish": "grock --github"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/novemberborn/aitch"
+  },
+  "keywords": [
+    "promise",
+    "promises",
+    "Promises/A+",
+    "promises-aplus",
+    "deferred",
+    "deferreds",
+    "when",
+    "future",
+    "async",
+    "asynchronous",
+    "http",
+    "request",
+    "client",
+    "legendary",
+    "aitch"
+  ],
+  "author": {
+    "name": "Mark Wubben",
+    "url": "http://novemberborn.net"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/novemberborn/aitch/issues"
+  },
+  "homepage": "https://github.com/novemberborn/aitch",
+  "peerDependencies": {
+    "legendary": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "jshint-stylish": "^0.1.5",
+    "jshint": "^2.5.0",
+    "mocha": "^1.18.2",
+    "sinon": "^1.9.1",
+    "chai-sentinels": "^1.0.0",
+    "legendary": "^1.0.0",
+    "grock": "^0.3.2",
+    "chai-as-promised": "^4.1.1"
+  },
+  "dependencies": {
+    "thenstream": "^1.0.0"
+  }
+}
