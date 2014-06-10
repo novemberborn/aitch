@@ -170,6 +170,16 @@ describe('UnencryptedTransport', function() {
           transport.issueRequest({}).cancel();
           mockRequest.verify();
         });
+
+        describe('if the request emits `error` later', function() {
+          it('doesn’t cause an uncaught exception', function() {
+            transport.issueRequest({}).cancel();
+
+            assert.doesNotThrow(function() {
+              mockRequest.object.emit('error');
+            });
+          });
+        });
       });
 
       describe('without a `body` option', function() {
