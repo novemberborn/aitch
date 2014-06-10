@@ -1,6 +1,6 @@
 {
   "name": "aitch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Toolkit for constructing hypertext service clients.",
   "main": "lib/main.js",
   "scripts": {
