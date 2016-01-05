@@ -31,6 +31,7 @@
 <span class="hljs-keyword">var</span> Promise = <span class="hljs-built_in">require</span>(<span class="hljs-string">'legendary'</span>).Promise;
 
 <span class="hljs-keyword">var</span> hop = {}.hasOwnProperty;
+<span class="hljs-keyword">var</span> noop = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>};
 </div></div>
       
       </div>
@@ -388,6 +389,7 @@ closed immediately.</p>
     <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
       request.removeListener(<span class="hljs-string">'response'</span>, resolve);
       request.removeListener(<span class="hljs-string">'error'</span>, reject);
+      request.on(<span class="hljs-string">'error'</span>, noop);
       request.abort();
     };
   });
