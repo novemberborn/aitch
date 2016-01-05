@@ -3,6 +3,10 @@ aitch
 
 Toolkit for constructing hypertext service clients.
 
+## Deprecation Notice
+
+This module is no longer maintained. It still has some neat ideas though.
+
 ## Installation
 
 ```
